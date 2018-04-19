@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: ${environment:default}
+  application:
+    name: sinergia
+  cloud:
+    config:
+      enable: true
+      uri: http://config-service-crm:8080
+      name: ${spring.application.name}
+      label: master
+      profile: ${spring.profiles.active}
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: system
+    password: oracle
+    driver-class-name: oracle.jdbc.driver.OracleDriver 
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 15
+logging:
+  level:
+    org.hibernate.SQLQuery: debug
