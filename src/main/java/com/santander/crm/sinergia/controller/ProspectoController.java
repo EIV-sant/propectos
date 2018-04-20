@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santander.crm.sinergia.entity.Prospecto;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
+import com.santander.crm.sinergia.response.AltaProspectoRes;
 import com.santander.crm.sinergia.service.ProspectoService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -51,12 +52,14 @@ public class ProspectoController {
 	
 	@RequestMapping(value = "/prospectos", method = { RequestMethod.POST })
 	@CrossOrigin(origins = "*")
-	public ResponseEntity<Prospecto> guardarProspecto(@RequestBody Prospecto prospecto)
-			throws IOException {
-		HttpStatus hs = HttpStatus.OK;
+	public ResponseEntity<Prospecto> guardarProspecto(@RequestBody Prospecto prospecto) {
+		AltaProspectoRes res = prospectoService.saveProspecto(prospecto);
+		
+		HttpStatus hs = res.getHttpStatus();
 		HttpHeaders header = new HttpHeaders();
-
-		Prospecto response = prospectoService.saveProspecto(prospecto);
+		header.add("errorMessage", res.getMessage());
+	
+		Prospecto response = res.getProspecto();
 
 		return new ResponseEntity<Prospecto>(response, header, hs);
 	}
