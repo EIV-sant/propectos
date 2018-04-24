@@ -1,7 +1,6 @@
 package com.santander.crm.sinergia.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.santander.crm.sinergia.entity.Prospecto;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
 import com.santander.crm.sinergia.response.AltaProspectoRes;
+import com.santander.crm.sinergia.response.ConsultaProspectosRes;
 import com.santander.crm.sinergia.service.ProspectoService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -35,19 +35,21 @@ public class ProspectoController {
 
 	@RequestMapping(value = "/prospectos/{idEjecutivo}", method = { RequestMethod.GET })
 	@CrossOrigin(origins = "*")
-	public ResponseEntity<List<Prospecto>> prospectos(@RequestParam(value = "filter", required = false) String filter, @PathVariable Integer idEjecutivo)
+	public ResponseEntity<ConsultaProspectosRes> prospectos(@RequestParam(value = "filter", required = false) String filter, @PathVariable Integer idEjecutivo)
 			throws IOException {
-		HttpStatus hs = HttpStatus.OK;
-		HttpHeaders header = new HttpHeaders();
 
 		ProspectoFilter pFilter = new ProspectoFilter();
 		if (filter != null) {
 			pFilter = new ObjectMapper().readValue(filter, ProspectoFilter.class);
 		}
 
-		List<Prospecto> response = prospectoService.getProspectosByFilter(pFilter);
+		ConsultaProspectosRes response = prospectoService.getProspectosByFilter(pFilter);
+		
+		HttpStatus hs = response.getHttpStatus();
+		HttpHeaders header = new HttpHeaders();
+		header.add("errorMessage", response.getMessage());
 
-		return new ResponseEntity<List<Prospecto>>(response, header, hs);
+		return new ResponseEntity<ConsultaProspectosRes>(response, header, hs);
 	}
 	
 	@RequestMapping(value = "/prospectos", method = { RequestMethod.POST })

@@ -1,12 +1,16 @@
 package com.santander.crm.sinergia.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
@@ -20,6 +24,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "SIN_MX_MAE_NC")
@@ -43,13 +48,6 @@ public class Prospecto {
 	@NotNull(message = "no puede ser nulo")
 	@Column(name = "SIN_MX_CAT_TPO_TEL_ID_TPO_TEL")
 	private Integer idTipoTelefono;
-
-	/**
-	 * Posibles valores: 1. PERSONA FISICA ACTIVIDAD EMPRESARIAL 2. PERSONA FISICA
-	 */
-	@NotEmpty
-	@Column(name = "TXT_PER_FIS")
-	private String tipoPersona;
 
 	@NotNull(message = "no puede ser nulo")
 	@Column(name = "SIN_MX_CAT_LOC_ID_LOC")
@@ -81,6 +79,13 @@ public class Prospecto {
 	// FIN INSERTADOS EN NEGOCIO
 
 	// OPCIONALES
+
+	/**
+	 * Posibles valores: 1. PERSONA FISICA ACTIVIDAD EMPRESARIAL 2. PERSONA FISICA
+	 */
+	@Column(name = "TXT_PER_FIS")
+	private String tipoPersona;
+
 	@Column(name = "SIN_MX_CAT_ACT_ID_ACT")
 	private Integer idActividad;
 	/**
@@ -144,7 +149,18 @@ public class Prospecto {
 
 	@Min(value = 0)
 	@Column(name = "NUM_CAPITAL_SOCIAL")
-	private Integer ingresosMensuales;
+	private Long capital;
+
+	@Column(name = "NUM_FACTURACION")
+	private Long facturacion;
+
+	@Min(value = 0)
+	@Column(name = "NUM_EMPLEADOS")
+	private Integer numEmpleados;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "prospecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Contacto> contactos;
 
 	public Date getFechaAlta() {
 		return fechaAlta;
@@ -364,20 +380,44 @@ public class Prospecto {
 		this.codPostal = codPostal;
 	}
 
-	public Integer getIngresosMensuales() {
-		return ingresosMensuales;
-	}
-
-	public void setIngresosMensuales(Integer ingresosMensuales) {
-		this.ingresosMensuales = ingresosMensuales;
-	}
-
 	public String getTelefono() {
 		return telefono;
 	}
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+
+	public List<Contacto> getContactos() {
+		return contactos;
+	}
+
+	public void setContactos(List<Contacto> contactos) {
+		this.contactos = contactos;
+	}
+
+	public Integer getNumEmpleados() {
+		return numEmpleados;
+	}
+
+	public void setNumEmpleados(Integer numEmpleados) {
+		this.numEmpleados = numEmpleados;
+	}
+
+	public Long getCapital() {
+		return capital;
+	}
+
+	public void setCapital(Long capital) {
+		this.capital = capital;
+	}
+
+	public Long getFacturacion() {
+		return facturacion;
+	}
+
+	public void setFacturacion(Long facturacion) {
+		this.facturacion = facturacion;
 	}
 
 }

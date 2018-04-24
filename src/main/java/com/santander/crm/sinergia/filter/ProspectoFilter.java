@@ -1,18 +1,45 @@
 package com.santander.crm.sinergia.filter;
 
-import javax.validation.constraints.NotNull;
-
 public class ProspectoFilter {
 
-	@NotNull
-	private Integer idEjecutivo;
+	private Integer pageNum;
 
-	public Integer getIdEjecutivo() {
-		return idEjecutivo;
+	private Integer pageSize;
+
+	private Integer tipoConsulta;
+
+	private String ofiAct;
+
+	public Integer getPageNum() {
+		return pageNum;
 	}
 
-	public void setIdEjecutivo(Integer idEjecutivo) {
-		this.idEjecutivo = idEjecutivo;
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getTipoConsulta() {
+		return tipoConsulta;
+	}
+
+	public void setTipoConsulta(Integer tipoConsulta) {
+		this.tipoConsulta = tipoConsulta;
+	}
+
+	public String getOfiAct() {
+		return ofiAct;
+	}
+
+	public void setOfiAct(String ofiAct) {
+		this.ofiAct = ofiAct;
 	}
 
 }

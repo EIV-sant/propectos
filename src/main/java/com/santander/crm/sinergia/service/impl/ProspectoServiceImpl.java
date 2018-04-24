@@ -19,6 +19,7 @@ import com.santander.crm.sinergia.dao.ProspectoRepository;
 import com.santander.crm.sinergia.entity.Prospecto;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
 import com.santander.crm.sinergia.response.AltaProspectoRes;
+import com.santander.crm.sinergia.response.ConsultaProspectosRes;
 import com.santander.crm.sinergia.service.ProspectoService;
 
 @Service("prospectoServiceImpl")
@@ -37,11 +38,31 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	// CAMPOS ESPECIFICOS
 	private static final Integer ACTIVIDAD_PARTICULAR = 7;
+	private static final String NO_APLICA = "NO APLICA";
 
 	@Override
-	public List<Prospecto> getProspectosByFilter(ProspectoFilter filter) {
-
-		return (List<Prospecto>) prospectoRepository.findAll();
+	public ConsultaProspectosRes getProspectosByFilter(ProspectoFilter filter) {
+		ConsultaProspectosRes response = new ConsultaProspectosRes();
+		
+		try {
+			
+			response.setHttpStatus(HttpStatus.OK);
+			List<Prospecto> prospectos= prospectoRepository.getProspectosFiltered(filter);
+			for(Prospecto p : prospectos) {
+				p.setContactos(null);
+			}
+			response.setProspectos(prospectos);
+			
+			response.setTotal(prospectoRepository.countProspectosFiltered(filter));
+			response.setConvertidos(prospectoRepository.countProspectosConvertidosFiltered(filter));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			response.setMessage(e.getMessage());
+		}
+		
+		return response;
 	}
 
 	@Override
@@ -104,8 +125,15 @@ public class ProspectoServiceImpl implements ProspectoService {
 			}
 			break;
 		case 2:
-			break;
 		case 3:
+			if(prospecto.getRfc() == null) {
+				LOGGER.error("Error: El campo rfc no puede ser nulo");
+				throw new ValidationException("Error: El campo rfc no puede ser nulo");
+			}
+			if(prospecto.getIdActividad() == null) {
+				LOGGER.error("Error: El campo idActividad no puede ser nulo");
+				throw new ValidationException("Error: El campo idActividad no puede ser nulo");
+			}
 			break;
 		}
 
@@ -121,8 +149,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 			prospecto.setIdActividad(ACTIVIDAD_PARTICULAR);
 			break;
 		case 2:
-			break;
 		case 3:
+			prospecto.setEstadoCivil(NO_APLICA);
+			prospecto.setGenero(NO_APLICA);
+			prospecto.setTipoPersona(NO_APLICA);
 			break;
 		}
 
