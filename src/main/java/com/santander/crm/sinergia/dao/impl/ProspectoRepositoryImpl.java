@@ -66,7 +66,7 @@ StringBuffer sbQuery = new StringBuffer();
 		
 		sbQuery.append("SELECT count(p.id) from Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
-		sbQuery.append(" and p.idEstatus = " + iEstatusConvertido);
+		sbQuery.append("and p.idEstatus = " + iEstatusConvertido);
 		
 		Query query = entityManager.createQuery(sbQuery.toString(), Long.class);
 		Long total = (Long) query.getSingleResult();

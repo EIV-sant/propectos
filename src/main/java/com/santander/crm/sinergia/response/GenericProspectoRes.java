@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 import com.santander.crm.sinergia.entity.Prospecto;
 
-public class AltaProspectoRes {
+public class GenericProspectoRes {
 	
 	private Prospecto prospecto;
 	

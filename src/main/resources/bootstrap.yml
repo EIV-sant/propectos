@@ -18,6 +18,3 @@ spring:
     hikari:
       connection-timeout: 60000
       maximum-pool-size: 15
-logging:
-  level:
-    org.hibernate.SQLQuery: debug

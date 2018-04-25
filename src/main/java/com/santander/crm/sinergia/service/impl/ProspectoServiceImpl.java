@@ -16,11 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.santander.crm.sinergia.dao.ProspectoRepository;
+import com.santander.crm.sinergia.entity.Ejecutivo;
 import com.santander.crm.sinergia.entity.Prospecto;
+import com.santander.crm.sinergia.exceptions.AccessException;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
-import com.santander.crm.sinergia.response.AltaProspectoRes;
 import com.santander.crm.sinergia.response.ConsultaProspectosRes;
+import com.santander.crm.sinergia.response.GenericProspectoRes;
 import com.santander.crm.sinergia.service.ProspectoService;
+import com.santander.crm.sinergia.service.TokenService;
 
 @Service("prospectoServiceImpl")
 public class ProspectoServiceImpl implements ProspectoService {
@@ -29,6 +32,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	@Autowired
 	ProspectoRepository prospectoRepository;
+	
+	@Autowired
+	TokenService tokenService;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -41,12 +47,18 @@ public class ProspectoServiceImpl implements ProspectoService {
 	private static final String NO_APLICA = "NO APLICA";
 
 	@Override
-	public ConsultaProspectosRes getProspectosByFilter(ProspectoFilter filter) {
+	public ConsultaProspectosRes getProspectosByFilter(ProspectoFilter filter, String token) {
 		ConsultaProspectosRes response = new ConsultaProspectosRes();
 		
 		try {
 			
-			response.setHttpStatus(HttpStatus.OK);
+//			Ejecutivo ejecutivo = tokenService.desencriptarToken("af9AuquMutWZbRASD6N5mf3C8ZkKXC1kal5PrNAub6TtWt4uZJA97bNnYd39jf7wOkYLlx65qW2aEeNTrhKxPFriZSD%2BV9AXirewm8kE5rADxZbbhyRsAA%3D%3D");
+			Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			
+			if(filter.getOfiAct()==null) {
+				filter.setOfiAct(ejecutivo.getOfiAct());
+			}
+			
 			List<Prospecto> prospectos= prospectoRepository.getProspectosFiltered(filter);
 			for(Prospecto p : prospectos) {
 				p.setContactos(null);
@@ -55,7 +67,11 @@ public class ProspectoServiceImpl implements ProspectoService {
 			
 			response.setTotal(prospectoRepository.countProspectosFiltered(filter));
 			response.setConvertidos(prospectoRepository.countProspectosConvertidosFiltered(filter));
+			response.setHttpStatus(HttpStatus.OK);
 			
+		}catch(AccessException ae) {
+			response.setHttpStatus(HttpStatus.BAD_REQUEST);
+			response.setMessage(ae.getMessage());
 		}catch(Exception e) {
 			e.printStackTrace();
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,11 +82,14 @@ public class ProspectoServiceImpl implements ProspectoService {
 	}
 
 	@Override
-	public AltaProspectoRes saveProspecto(Prospecto prospecto) {
-		AltaProspectoRes response = new AltaProspectoRes();
+	public GenericProspectoRes saveProspecto(Prospecto prospecto, String token) {
+		GenericProspectoRes response = new GenericProspectoRes();
 		try {
-			prospecto.setExpReferente("C787961");//Cambiar por token
-			prospecto.setOfiReferente("9500");//Cambiar por token
+			
+			Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			
+			prospecto.setExpReferente(ejecutivo.getExpediente());
+			prospecto.setOfiReferente(ejecutivo.getOfiAct());
 			
 			// Validaciones
 			validaProspectoBean(prospecto);
@@ -95,6 +114,50 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	}
 
+	@Override
+	public GenericProspectoRes getProspecto(Integer idProspecto) {
+		GenericProspectoRes response = new GenericProspectoRes();
+		try {
+			
+			response.setProspecto(prospectoRepository.getProspectoById(idProspecto));
+			response.setHttpStatus(HttpStatus.OK);
+		} catch(Exception e) {
+			response.setMessage(e.getMessage());
+			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return response;
+	}
+	
+	@Override 
+	public GenericProspectoRes updateProspecto(Prospecto prospecto) {
+		GenericProspectoRes response = new GenericProspectoRes();
+		try {
+			validaProspectoBean(prospecto);
+			Prospecto prospectoAnt = prospectoRepository.getProspectoById(prospecto.getId());
+			if(prospectoAnt != null) {
+				
+				//INFORMACIÓN QUE NO CAMBIA
+				prospecto.setOfiReferente(prospectoAnt.getOfiAsignado());
+				prospecto.setExpReferente(prospectoAnt.getExpReferente());
+				prospecto.setIdEstatus(prospectoAnt.getIdEstatus());
+				
+				response.setProspecto(prospectoRepository.save(prospecto));
+				response.setHttpStatus(HttpStatus.OK);
+			} else {
+				throw new ValidationException("No se encuentra el prospecto");
+			}
+			
+		} catch (ValidationException ve) {
+			response.setHttpStatus(HttpStatus.BAD_REQUEST);
+			response.setMessage(ve.getMessage());
+		} catch(Exception e) {
+			response.setMessage(e.getMessage());
+			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return response;
+	}
+	
 	private void validaProspectoBean(Prospecto prospecto) {
 		// Validaciones generales
 		Set<ConstraintViolation<Prospecto>> violations = validator.validate(prospecto);
@@ -158,5 +221,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 		return prospecto;
 	}
+
+	
 
 }
