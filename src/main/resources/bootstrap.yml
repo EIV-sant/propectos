@@ -6,14 +6,11 @@ spring:
   cloud:
     config:
       enable: true
-      uri: http://config-service-crm:8080
+      uri: http://config-service-sinergias:8080
       name: ${spring.application.name}
       label: master
       profile: ${spring.profiles.active}
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: system
-    password: oracle
     driver-class-name: oracle.jdbc.driver.OracleDriver 
     hikari:
       connection-timeout: 60000
