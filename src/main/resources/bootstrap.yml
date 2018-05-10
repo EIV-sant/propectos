@@ -12,6 +12,3 @@ spring:
       profile: ${spring.profiles.active}
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver 
-    hikari:
-      connection-timeout: 60000
-      maximum-pool-size: 15

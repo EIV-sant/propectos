@@ -30,6 +30,8 @@ public class OracleConfig {
 	@Bean
 	DataSource dataSource() throws SQLException{
 		
+		LOGGER.info("Se conecta a BD en " + urlOracle);
+		
 		if(urlOracle.equals(null) || urlOracle.isEmpty() || urlOracle.equals("") || urlOracle.equals("${url.oracle}")) {
 			LOGGER.error("NO SE ENCUENTRA LA CONFIGURACIÓN DE ORACLE. REVISAR CONFIG-SERVICE - url.oracle. LA APLICACION SE TERMINARÁ");
 			System.exit(0);
