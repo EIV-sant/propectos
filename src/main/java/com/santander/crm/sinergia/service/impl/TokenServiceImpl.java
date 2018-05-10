@@ -18,7 +18,7 @@ public class TokenServiceImpl implements TokenService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TokenServiceImpl.class);
 
-	private static final String ID_LLAVE = "token";
+	private static final String ID_LLAVE = "decipher_key";
 	private static final String DELIMITER = "\\|";
 
 	@Autowired
