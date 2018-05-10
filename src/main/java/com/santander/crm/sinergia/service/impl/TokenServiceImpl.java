@@ -58,8 +58,8 @@ public class TokenServiceImpl implements TokenService {
 
 		} catch (Exception e) {
 
-			LOGGER.info("Token incorrecto");
-			throw new AccessException("Token incorrecto");
+			LOGGER.info("Error al desencriptar el token" + e.getMessage());
+			throw new AccessException("Error al desencriptar el token");
 		}
 
 		return ejecutivo;
