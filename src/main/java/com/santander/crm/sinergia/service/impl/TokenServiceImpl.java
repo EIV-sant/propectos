@@ -35,6 +35,10 @@ public class TokenServiceImpl implements TokenService {
 		try {
 
 			Parametro llave = parametroRepository.findByNombre(ID_LLAVE);
+			
+			if(llave == null || llave.getValor()==null || llave.getValor().isEmpty()) {
+				throw new Exception("No se encuentra la llave para desencriptar");
+			}
 			// desencriptado = CipherSinergias.desCipher(token, llave);
 			desencriptado = CipherSinergias.desCipherURL(token, llave.getValor());
 
