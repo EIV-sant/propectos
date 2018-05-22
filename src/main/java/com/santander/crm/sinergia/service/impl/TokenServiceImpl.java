@@ -48,7 +48,6 @@ public class TokenServiceImpl implements TokenService {
 			
 			if(arrayValores.length > 1) {
 				ejecutivo = ejecutivoRepository.findOne(arrayValores[0]);
-				
 			} else {
 				LOGGER.info("Token incorrecto");
 				throw new AccessException("Token incorrecto");

@@ -12,5 +12,7 @@ public interface ProspectoCustomRepository {
 	Long countProspectosFiltered(ProspectoFilter filter);
 	
 	Long countProspectosConvertidosFiltered(ProspectoFilter filter);
+	
+	Long countProspectosByEjecutivo(String ofiAsignado);
 
 }

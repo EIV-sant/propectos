@@ -15,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -161,6 +162,17 @@ public class Prospecto {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "prospecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Contacto> contactos;
+	
+	//NO PERSISTEN
+	@Transient
+	private Integer numCC;
+	
+	@Transient
+	private Integer idZon;
+	
+	@Transient
+	private Integer idReg;
+	
 
 	public Date getFechaAlta() {
 		return fechaAlta;
@@ -419,5 +431,30 @@ public class Prospecto {
 	public void setFacturacion(Long facturacion) {
 		this.facturacion = facturacion;
 	}
+
+	public Integer getNumCC() {
+		return numCC;
+	}
+
+	public void setNumCC(Integer numCC) {
+		this.numCC = numCC;
+	}
+
+	public Integer getIdZon() {
+		return idZon;
+	}
+
+	public void setIdZon(Integer idZon) {
+		this.idZon = idZon;
+	}
+
+	public Integer getIdReg() {
+		return idReg;
+	}
+
+	public void setIdReg(Integer idReg) {
+		this.idReg = idReg;
+	}
+
 
 }

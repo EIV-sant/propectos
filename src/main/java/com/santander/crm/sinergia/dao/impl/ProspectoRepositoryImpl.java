@@ -62,13 +62,21 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 
 	@Override
 	public Long countProspectosConvertidosFiltered(ProspectoFilter filter) {
-StringBuffer sbQuery = new StringBuffer();
+		StringBuffer sbQuery = new StringBuffer();
 		
 		sbQuery.append("SELECT count(p.id) from Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
 		sbQuery.append("and p.idEstatus = " + iEstatusConvertido);
 		
 		Query query = entityManager.createQuery(sbQuery.toString(), Long.class);
+		Long total = (Long) query.getSingleResult();
+		return total;
+	}
+	
+	@Override
+	public Long countProspectosByEjecutivo(String ofiAsignado) {
+		Query query = entityManager.createQuery("SELECT count(p.id) FROM Prospecto p WHERE p.ofiAsignado = :ofiAsignado ", Long.class);
+		query.setParameter("ofiAsignado", ofiAsignado);
 		Long total = (Long) query.getSingleResult();
 		return total;
 	}
