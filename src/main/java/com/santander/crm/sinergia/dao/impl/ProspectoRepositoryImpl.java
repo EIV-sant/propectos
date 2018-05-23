@@ -41,7 +41,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 		sbQuery.append("SELECT p FROM Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
 		sbQuery.append("order by p.idEstatus asc, p.fechaAlta asc, p.id asc ");
-		
+		System.out.println("query-->"+sbQuery);
 		Query query = entityManager.createQuery(sbQuery.toString(), Prospecto.class);
 		query.setFirstResult(pageNum);
 		query.setMaxResults(pageSize);
@@ -87,16 +87,16 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 		if (filter.getTipoConsulta() != null) {
 			switch (filter.getTipoConsulta()) {
 			case 1:
-				sbWhere.append("p.ofiReferente = " + filter.getOfiAct());
+				sbWhere.append("p.ofiReferente = " + filter.getOfiAct() + "'");
 				break;
 			case 2:
 				// caso 2 u otro se va por asignado
 			default:
-				sbWhere.append("p.ofiAsignado = " + filter.getOfiAct());
+				sbWhere.append("p.ofiAsignado = '" + filter.getOfiAct() + "'");
 				break;
 			}
 		} else {
-			sbWhere.append("p.ofiAsignado = " + filter.getOfiAct());
+			sbWhere.append("p.ofiAsignado = '" + filter.getOfiAct() + "'");
 		}
 		sbWhere.append(" ");
 		return sbWhere.toString();
