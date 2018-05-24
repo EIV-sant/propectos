@@ -38,9 +38,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	@Autowired
 	EjecutivoRepository ejecutivoRepository;
-	
+
 	@Autowired
-	EjecutivoSrRepository ejecutivoSrRepository; 
+	EjecutivoSrRepository ejecutivoSrRepository;
 
 	@Autowired
 	TokenService tokenService;
@@ -121,7 +121,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
-//			response.setProspecto(prospecto);
+			// response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
 
 		} catch (ValidationException ve) {
@@ -267,18 +267,17 @@ public class ProspectoServiceImpl implements ProspectoService {
 		case 1: // Particular
 			if (prospecto.getCapital() == null) {
 				// ejecutivo director
-				System.out.println("TIPO_DIRECTOR--->"+TIPO_DIRECTOR);
-				System.out.println("prospecto.getNumCC()--->"+prospecto.getNumCC());
-				ejec = ejecutivoRepository.getEjecutivoByIdTipoIdTipoIdSucursal(TIPO_DIRECTOR, 1,
-						prospecto.getNumCC());
-				LOGGER.debug("MONTO NULL--->"+ ejec);
+				ejec = ejecutivoRepository.getEjecutivoByIdTipoIdTipoIdSucursal(TIPO_DIRECTOR, 1, prospecto.getNumCC());
 			} else {
 				if (prospecto.getCapital() >= 75000) { // monto mayor o igual a 75,000
 					// Ej. Gerente de negocio select --> 62, sino al Ej. premier --> 2
-					ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(
-							TIPO_GERENTENEGOCIOSELECT, 1, prospecto.getNumCC());
+					ejecutivoList = ejecutivoRepository
+							.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_GERENTENEGOCIOSELECT, 1, prospecto.getNumCC());
+					System.out.println("gerente select lista-->" + ejecutivoList);
 					if (!ejecutivoList.isEmpty()) { // Ej. Gerente de negocio select --> 62
+						System.out.println("gerente select-->");
 						ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
+						System.out.println("gerente select seleccionado-->" + ejec.getOfiAct());
 					} else { // Ej. premier --> 2
 						ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_PREMIER, 1,
 								prospecto.getNumCC());
@@ -296,8 +295,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 					if (!ejecutivoList.isEmpty()) { // Ej. Comercial --> 6
 						ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
 					} else { // Ej. Comercial --> 8
-						ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_COMERCIAL8,
-								1, prospecto.getNumCC());
+						ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_COMERCIAL8, 1,
+								prospecto.getNumCC());
 						if (!ejecutivoList.isEmpty()) { // Ej. Comercial --> 8
 							ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
 						} else {
@@ -307,24 +306,29 @@ public class ProspectoServiceImpl implements ProspectoService {
 					}
 				}
 			}
-			System.out.println("ejecutivo-->" + ejec);
+			System.out.println("ejecutivo particular-->" + ejec);
 			break;
 		case 2: // PyME
-			ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(
-					TIPO_JR, 2, prospecto.getNumCC());
+			ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_JR, 2,
+					prospecto.getNumCC());
 			if (!ejecutivoList.isEmpty()) { // Ej. Jr --> 7
 				ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
 			} else {
-				List<EjecutivoSr> ejecutivoSrList = ejecutivoSrRepository.getEjecutivosSrByIdSucursal(prospecto.getNumCC());
-				if(!ejecutivoSrList.isEmpty()) { // Ej Sr --> tabla relación
+				List<EjecutivoSr> ejecutivoSrList = ejecutivoSrRepository
+						.getEjecutivosSrByIdSucursal(prospecto.getNumCC());
+				if (!ejecutivoSrList.isEmpty()) { // Ej Sr --> tabla relación
 					EjecutivoSr es = ejecutivoSrList.get(0);
 					ejec = ejecutivoRepository.findByOfiAct(es.getOfiAct());
 				} else { // Ej Director sin banca
-					ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_DIRECTOR,
-							null, prospecto.getNumCC());
+					ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_DIRECTOR, null,
+							prospecto.getNumCC());
 					ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
 				}
 			}
+			break;
+		case 3: //BEI
+			ejec = new Ejecutivo();
+			ejec.setOfiAct(prospecto.getOfiAsignado());
 			break;
 		}
 		return ejec;
@@ -339,24 +343,32 @@ public class ProspectoServiceImpl implements ProspectoService {
 		} else { // selecciona el ejecutivo con menos prospectos asignados
 			for (Ejecutivo e : ejecutivoList) {
 				if (band) {// si es el primer registro
+					System.out.println("primer registro-->");
 					count = prospectoRepository.countProspectosByEjecutivo(e.getOfiAct());
+					System.out.println("primer registro count -->" + count);
 					ejec = e;
-					if (count == null) { // si no tiene se asigna este ej por default
+					if (count == null) { // si no tiene se asigna este ejec por default
+						System.out.println("primer registro count null-->");
 						break;
 					}
 					band = false;
-				}
-				Long countAux = prospectoRepository.countProspectosByEjecutivo(e.getOfiAct());
-				if (countAux != null) {
-					if (countAux < count) { // si es menor se reasigna el ej
+				} else {
+					System.out.println("registro-->");
+					Long countAux = prospectoRepository.countProspectosByEjecutivo(e.getOfiAct());
+					if (countAux != null) {
+						if (countAux < count) { // si es menor se reasigna el ejec
+							System.out.println("registro menor-->");
+							ejec = e;
+							count = countAux;
+						}
+					} else { // si no tiene se asigna este ejec por default
+						System.out.println("registro sin asignados-->");
 						ejec = e;
-						count = countAux;
+						break;
 					}
-				} else { // si no tiene se asigna este ej por default
-					ejec = e;
-					break;
 				}
 			}
+			System.out.println("ejec seleccionado-->" + ejec);
 		}
 		return ejec;
 	}
