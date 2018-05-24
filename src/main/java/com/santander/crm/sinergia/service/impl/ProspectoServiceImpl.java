@@ -209,6 +209,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo paterno no puede ser nulo");
 				throw new ValidationException("Error: El campo paterno no puede ser nulo");
 			}
+			if(prospecto.getNumCC() == null) {
+				LOGGER.error("Error: El campo sucursal no puede ser nulo");
+				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
+			}
 			break;
 		case 2: // Pyme
 			if (prospecto.getRfc() == null) {
@@ -218,6 +222,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 			if (prospecto.getIdActividad() == null) {
 				LOGGER.error("Error: El campo idActividad no puede ser nulo");
 				throw new ValidationException("Error: El campo idActividad no puede ser nulo");
+			}
+			if(prospecto.getNumCC() == null) {
+				LOGGER.error("Error: El campo sucursal no puede ser nulo");
+				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
 			break;
 		case 3: // Bei
