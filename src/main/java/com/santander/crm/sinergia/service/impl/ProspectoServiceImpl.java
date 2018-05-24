@@ -119,9 +119,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
 
-			// Prospecto prospectoSaved = prospectoRepository.save(prospecto);
-			// response.setProspecto(prospectoSaved);
-			response.setProspecto(prospecto);
+			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
+			response.setProspecto(prospectoSaved);
+//			response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
 
 		} catch (ValidationException ve) {
@@ -267,8 +267,11 @@ public class ProspectoServiceImpl implements ProspectoService {
 		case 1: // Particular
 			if (prospecto.getCapital() == null) {
 				// ejecutivo director
+				System.out.println("TIPO_DIRECTOR--->"+TIPO_DIRECTOR);
+				System.out.println("prospecto.getNumCC()--->"+prospecto.getNumCC());
 				ejec = ejecutivoRepository.getEjecutivoByIdTipoIdTipoIdSucursal(TIPO_DIRECTOR, 1,
 						prospecto.getNumCC());
+				LOGGER.debug("MONTO NULL--->"+ ejec);
 			} else {
 				if (prospecto.getCapital() >= 75000) { // monto mayor o igual a 75,000
 					// Ej. Gerente de negocio select --> 62, sino al Ej. premier --> 2
