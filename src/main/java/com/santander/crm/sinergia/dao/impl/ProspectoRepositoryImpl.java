@@ -87,7 +87,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 		if (filter.getTipoConsulta() != null) {
 			switch (filter.getTipoConsulta()) {
 			case 1:
-				sbWhere.append("p.ofiReferente = " + filter.getOfiAct() + "'");
+				sbWhere.append("p.ofiReferente = '" + filter.getOfiAct() + "'");
 				break;
 			case 2:
 				// caso 2 u otro se va por asignado
