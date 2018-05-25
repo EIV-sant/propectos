@@ -115,7 +115,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// Setteos
 			prospecto = setDefaultValues(prospecto);
 
-			// Asignacion
+			// Asignacion}switch(prospecto.getIdBanca()) {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
 
@@ -202,8 +202,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				throw new ValidationException("Error: El campo genero no puede ser nulo");
 			}
 			if (prospecto.getEstadoCivil() == null) {
-				LOGGER.error("Error: El campo estadoCivil no puede ser nulo");
-				throw new ValidationException("Error: El campo estadoCivil no puede ser nulo");
+				prospecto.setEstadoCivil(NO_APLICA);
 			}
 			if (prospecto.getPaterno() == null) {
 				LOGGER.error("Error: El campo paterno no puede ser nulo");
