@@ -102,6 +102,9 @@ public class Prospecto {
 
 	@Column(name = "TXT_TEL")
 	private String telefono;
+	
+	@Column(name = "TXT_EXT")
+	private String ext;
 
 	@Email(message = "es incorrecto")
 	@Column(name = "TXT_EMAIL")
@@ -455,5 +458,12 @@ public class Prospecto {
 		this.idReg = idReg;
 	}
 
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
 
 }

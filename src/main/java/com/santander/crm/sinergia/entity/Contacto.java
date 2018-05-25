@@ -37,6 +37,9 @@ public class Contacto {
 
 	@Column(name = "TXT_TEL")
 	private String telefono;
+	
+	@Column(name = "TXT_EXT")
+	private String ext;
 
 	@Column(name = "SIN_MX_CAT_TPO_TEL_ID_TPO_TEL")
 	private Integer idTipoTelefono;
@@ -101,6 +104,14 @@ public class Contacto {
 
 	public void setProspecto(Prospecto prospecto) {
 		this.prospecto = prospecto;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 }

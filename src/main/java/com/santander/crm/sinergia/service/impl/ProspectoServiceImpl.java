@@ -50,6 +50,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	// ESTATUS
 	private static final Integer ESTATUS_NUEVO = 1;
+	
+	//TIPO TELÉFONO
+//	private static final Integer TELEFONO_OFICINA = 3;
 
 	// PERFILES EJECUTIVOS
 	private static final Integer TIPO_DIRECTOR = 1;
