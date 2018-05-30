@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.santander.crm.sinergia.entity.Prospecto;
+import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 public class ConsultaProspectosRes {
 
-	private List<Prospecto> prospectos;
+	private List<ProspectoSeguimiento> prospectos;
 
 	private Long total;
 
@@ -21,11 +21,11 @@ public class ConsultaProspectosRes {
 	@JsonIgnore
 	private String message;
 
-	public List<Prospecto> getProspectos() {
+	public List<ProspectoSeguimiento> getProspectos() {
 		return prospectos;
 	}
 
-	public void setProspectos(List<Prospecto> prospectos) {
+	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
 		this.prospectos = prospectos;
 	}
 

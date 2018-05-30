@@ -1,5 +1,6 @@
 package com.santander.crm.sinergia.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.santander.crm.sinergia.dao.ProspectoCustomRepository;
 import com.santander.crm.sinergia.entity.Prospecto;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
+import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 @Repository
 public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
@@ -22,7 +24,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Prospecto> getProspectosFiltered(ProspectoFilter filter) {
+	public List<ProspectoSeguimiento> getProspectosFiltered(ProspectoFilter filter) {
 		Integer pageNum = 0;
 		Integer pageSize = 5;
 
@@ -38,14 +40,25 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 
 		StringBuffer sbQuery = new StringBuffer();
 
-		sbQuery.append("SELECT p FROM Prospecto p ");
+		sbQuery.append("SELECT p, to_date(sysdate, 'dd/mm/yyyy') - to_date(p.fechaAlta, 'dd/mm/yyyy') as dias FROM Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
 		sbQuery.append("order by p.idEstatus asc, p.fechaAlta asc, p.id asc ");
 		System.out.println("query-->"+sbQuery);
-		Query query = entityManager.createQuery(sbQuery.toString(), Prospecto.class);
+		Query query = entityManager.createQuery(sbQuery.toString());
 		query.setFirstResult(pageNum);
 		query.setMaxResults(pageSize);
-		return query.getResultList();
+		List<ProspectoSeguimiento> psList = new ArrayList<>();
+		List<Object[]> resultList = query.getResultList();
+		ProspectoSeguimiento ps = null;
+		for (Object o[] : resultList) {
+			ps = new ProspectoSeguimiento();
+			Prospecto pr = (Prospecto) o[0];
+			ps.setP(pr);
+			Integer i = ((Double)o[1]).intValue();
+			ps.setDias(i);
+			psList.add(ps);
+		}
+		return psList;
 	}
 
 	@Override

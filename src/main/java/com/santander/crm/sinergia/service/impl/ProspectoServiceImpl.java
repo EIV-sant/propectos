@@ -1,5 +1,9 @@
 package com.santander.crm.sinergia.service.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +27,7 @@ import com.santander.crm.sinergia.entity.EjecutivoSr;
 import com.santander.crm.sinergia.entity.Prospecto;
 import com.santander.crm.sinergia.exceptions.AccessException;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
+import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 import com.santander.crm.sinergia.response.ConsultaProspectosRes;
 import com.santander.crm.sinergia.response.GenericProspectoRes;
 import com.santander.crm.sinergia.service.ProspectoService;
@@ -50,9 +55,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	// ESTATUS
 	private static final Integer ESTATUS_NUEVO = 1;
-	
-	//TIPO TELÉFONO
-//	private static final Integer TELEFONO_OFICINA = 3;
+
+	// TIPO TELÉFONO
+	// private static final Integer TELEFONO_OFICINA = 3;
 
 	// PERFILES EJECUTIVOS
 	private static final Integer TIPO_DIRECTOR = 1;
@@ -80,9 +85,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 				filter.setOfiAct(ejecutivo.getOfiAct());
 			}
 
-			List<Prospecto> prospectos = prospectoRepository.getProspectosFiltered(filter);
-			for (Prospecto p : prospectos) {
-				p.setContactos(null);
+			List<ProspectoSeguimiento> prospectos = prospectoRepository.getProspectosFiltered(filter);
+			for (ProspectoSeguimiento p : prospectos) {
+				Prospecto pr = p.getP();
+				pr.setContactos(null);
 			}
 			response.setProspectos(prospectos);
 
@@ -112,6 +118,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 			prospecto.setExpReferente(ejecutivo.getExpediente());
 			prospecto.setOfiReferente(ejecutivo.getOfiAct());
 
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			prospecto.setFechaNacimiento(df.parse(prospecto.getFecNac()));
+
 			// Validaciones
 			validaProspectoBean(prospecto);
 
@@ -122,14 +131,17 @@ public class ProspectoServiceImpl implements ProspectoService {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
 
-			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
+			Prospecto prospectoSaved = null;// prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
-			// response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
 
 		} catch (ValidationException ve) {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ve.getMessage());
+		} catch (ParseException pe) {
+			System.out.println("pe-->"+pe.getMessage());
+			response.setHttpStatus(HttpStatus.BAD_REQUEST);
+			response.setMessage(pe.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setMessage(e.getMessage());
@@ -211,7 +223,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo paterno no puede ser nulo");
 				throw new ValidationException("Error: El campo paterno no puede ser nulo");
 			}
-			if(prospecto.getNumCC() == null) {
+			if (prospecto.getNumCC() == null) {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
@@ -225,7 +237,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo idActividad no puede ser nulo");
 				throw new ValidationException("Error: El campo idActividad no puede ser nulo");
 			}
-			if(prospecto.getNumCC() == null) {
+			if (prospecto.getNumCC() == null) {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
@@ -336,7 +348,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				}
 			}
 			break;
-		case 3: //BEI
+		case 3: // BEI
 			ejec = new Ejecutivo();
 			ejec.setOfiAct(prospecto.getOfiAsignado());
 			break;

@@ -175,7 +175,9 @@ public class Prospecto {
 	@Transient
 	private Integer idReg;
 	
-
+	@Transient
+	private String fecNac;
+	
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
@@ -464,6 +466,14 @@ public class Prospecto {
 
 	public void setExt(String ext) {
 		this.ext = ext;
+	}
+
+	public String getFecNac() {
+		return fecNac;
+	}
+
+	public void setFecNac(String fecNac) {
+		this.fecNac = fecNac;
 	}
 
 }

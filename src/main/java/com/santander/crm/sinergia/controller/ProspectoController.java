@@ -72,6 +72,7 @@ public class ProspectoController {
 	@CrossOrigin(origins = "*")
 	public ResponseEntity<Prospecto> guardarProspecto(@RequestBody Prospecto prospecto,
 			@RequestHeader(value = "token", required = true) String token) {
+		
 		GenericProspectoRes res = prospectoService.saveProspecto(prospecto, token);
 
 		HttpStatus hs = res.getHttpStatus();
