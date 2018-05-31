@@ -117,9 +117,11 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 			prospecto.setExpReferente(ejecutivo.getExpediente());
 			prospecto.setOfiReferente(ejecutivo.getOfiAct());
-
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			prospecto.setFechaNacimiento(df.parse(prospecto.getFecNac()));
+			
+			if (prospecto.getFecNac() != null) {
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				prospecto.setFechaNacimiento(df.parse(prospecto.getFecNac()));
+			}
 
 			// Validaciones
 			validaProspectoBean(prospecto);
@@ -139,7 +141,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ve.getMessage());
 		} catch (ParseException pe) {
-			System.out.println("pe-->"+pe.getMessage());
+			System.out.println("pe-->" + pe.getMessage());
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(pe.getMessage());
 		} catch (Exception e) {
@@ -204,7 +206,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			LOGGER.error("Error: El campo " + vi.getPropertyPath() + " " + vi.getMessage());
 			throw new ValidationException("Error: El campo " + vi.getPropertyPath() + " " + vi.getMessage());
 		}
-
+		
 		// Validaciones especificas
 		switch (prospecto.getIdBanca()) {
 		case 1: // Particulares
