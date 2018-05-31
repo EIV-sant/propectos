@@ -46,10 +46,6 @@ public class Prospecto {
 	@Column(name = "SIN_MX_CAT_TPO_BCA_ID_TPO_BCA")
 	private Integer idBanca;
 
-	@NotNull(message = "no puede ser nulo")
-	@Column(name = "SIN_MX_CAT_TPO_TEL_ID_TPO_TEL")
-	private Integer idTipoTelefono;
-
 	// FIN OBLIGATORIOS
 
 	// GENERADOS AUTOMATICAMENTE
@@ -76,6 +72,9 @@ public class Prospecto {
 	// FIN INSERTADOS EN NEGOCIO
 
 	// OPCIONALES
+	
+	@Column(name = "SIN_MX_CAT_TPO_TEL_ID_TPO_TEL")
+	private Integer idTipoTelefono;
 
 	@Column(name = "SIN_MX_CAT_LOC_ID_LOC")
 	private Integer idLocalidad;
