@@ -133,7 +133,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
 
-			Prospecto prospectoSaved = null;// prospectoRepository.save(prospecto);
+			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
 			response.setHttpStatus(HttpStatus.OK);
 
