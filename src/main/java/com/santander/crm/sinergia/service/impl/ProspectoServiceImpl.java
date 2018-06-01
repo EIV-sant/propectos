@@ -132,6 +132,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// Asignacion}switch(prospecto.getIdBanca()) {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
+			
+			prospecto.setFechaActualizacion();
 
 			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
