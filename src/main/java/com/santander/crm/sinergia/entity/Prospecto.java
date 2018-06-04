@@ -159,6 +159,12 @@ public class Prospecto {
 	@Min(value = 0)
 	@Column(name = "NUM_EMPLEADOS")
 	private Integer numEmpleados;
+	
+	@Column(name = "TXT_NOM_EJV_REF_POR")
+	private String nombreEjecRef;
+	
+	@Column(name = "ID_EDO")
+	private Integer idEstado;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "prospecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -473,6 +479,22 @@ public class Prospecto {
 
 	public void setFecNac(String fecNac) {
 		this.fecNac = fecNac;
+	}
+
+	public String getNombreEjecRef() {
+		return nombreEjecRef;
+	}
+
+	public void setNombreEjecRef(String nombreEjecRef) {
+		this.nombreEjecRef = nombreEjecRef;
+	}
+
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
 	}
 
 }
