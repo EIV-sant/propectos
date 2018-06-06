@@ -172,6 +172,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 			Sucursal s = sucursalRepository.findByid(prospecto.getNumCC());
 			prospecto.setIdZon(s.getIdZona());
 			prospecto.setIdReg(s.getIdRegion());
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			prospecto.setFecNac(df.format(prospecto.getFechaNacimiento()));
 			response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
 		} catch (NullPointerException ne) {
