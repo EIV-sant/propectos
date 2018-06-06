@@ -41,7 +41,7 @@ public class TokenServiceImpl implements TokenService {
 			}
 			// desencriptado = CipherSinergias.desCipher(token, llave);
 			desencriptado = CipherSinergias.desCipherURL(token, llave.getValor());
-
+			
 			System.out.println("TOKEN -> " + desencriptado);
 			
 			String[] arrayValores = desencriptado.split(DELIMITER);

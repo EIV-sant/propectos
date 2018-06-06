@@ -15,6 +15,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -121,6 +123,7 @@ public class Prospecto {
 
 	@Past
 	@Column(name = "FCH_NAC")
+	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
 
 	/**
