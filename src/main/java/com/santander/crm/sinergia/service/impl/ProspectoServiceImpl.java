@@ -22,9 +22,11 @@ import org.springframework.stereotype.Service;
 import com.santander.crm.sinergia.dao.EjecutivoRepository;
 import com.santander.crm.sinergia.dao.EjecutivoSrRepository;
 import com.santander.crm.sinergia.dao.ProspectoRepository;
+import com.santander.crm.sinergia.dao.SucursalRepository;
 import com.santander.crm.sinergia.entity.Ejecutivo;
 import com.santander.crm.sinergia.entity.EjecutivoSr;
 import com.santander.crm.sinergia.entity.Prospecto;
+import com.santander.crm.sinergia.entity.Sucursal;
 import com.santander.crm.sinergia.exceptions.AccessException;
 import com.santander.crm.sinergia.filter.ProspectoFilter;
 import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
@@ -49,6 +51,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	@Autowired
 	TokenService tokenService;
+	
+	@Autowired
+	SucursalRepository sucursalRepository; 
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -160,9 +165,18 @@ public class ProspectoServiceImpl implements ProspectoService {
 	public GenericProspectoRes getProspecto(Integer idProspecto) {
 		GenericProspectoRes response = new GenericProspectoRes();
 		try {
-
-			response.setProspecto(prospectoRepository.getProspectoById(idProspecto));
+			Prospecto prospecto = prospectoRepository.getProspectoById(idProspecto);
+			Ejecutivo e = ejecutivoRepository.findByOfiAct(prospecto.getOfiAsignado());
+			prospecto.setNombreOfiAsignado(e.getNombre());
+			prospecto.setNumCC(e.getIdSucursal());
+			Sucursal s = sucursalRepository.findByid(prospecto.getNumCC());
+			prospecto.setIdZon(s.getIdZona());
+			prospecto.setIdReg(s.getIdRegion());
+			response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
+		} catch (NullPointerException ne) {
+			response.setMessage(ne.getMessage());
+			response.setHttpStatus(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);

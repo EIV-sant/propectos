@@ -183,6 +183,9 @@ public class Prospecto {
 	@Transient
 	private String fecNac;
 	
+	@Transient
+	private String nombreOfiAsignado;
+	
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
@@ -495,6 +498,14 @@ public class Prospecto {
 
 	public void setIdEstado(Integer idEstado) {
 		this.idEstado = idEstado;
+	}
+
+	public String getNombreOfiAsignado() {
+		return nombreOfiAsignado;
+	}
+
+	public void setNombreOfiAsignado(String nombreOfiAsignado) {
+		this.nombreOfiAsignado = nombreOfiAsignado;
 	}
 
 }
