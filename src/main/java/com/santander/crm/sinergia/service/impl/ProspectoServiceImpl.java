@@ -51,9 +51,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	@Autowired
 	TokenService tokenService;
-	
+
 	@Autowired
-	SucursalRepository sucursalRepository; 
+	SucursalRepository sucursalRepository;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -122,7 +122,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 			prospecto.setExpReferente(ejecutivo.getExpediente());
 			prospecto.setOfiReferente(ejecutivo.getOfiAct());
-			
+
 			if (prospecto.getFecNac() != null) {
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				prospecto.setFechaNacimiento(df.parse(prospecto.getFecNac()));
@@ -137,7 +137,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// Asignacion}switch(prospecto.getIdBanca()) {
 			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
 			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
-			
+
 			prospecto.setFechaActualizacion();
 
 			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
@@ -172,8 +172,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 			Sucursal s = sucursalRepository.findByid(prospecto.getNumCC());
 			prospecto.setIdZon(s.getIdZona());
 			prospecto.setIdReg(s.getIdRegion());
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			prospecto.setFecNac(df.format(prospecto.getFechaNacimiento()));
+			if (prospecto.getFechaNacimiento() != null) {
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				prospecto.setFecNac(df.format(prospecto.getFechaNacimiento()));
+			}
 			response.setProspecto(prospecto);
 			response.setHttpStatus(HttpStatus.OK);
 		} catch (NullPointerException ne) {
@@ -224,7 +226,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			LOGGER.error("Error: El campo " + vi.getPropertyPath() + " " + vi.getMessage());
 			throw new ValidationException("Error: El campo " + vi.getPropertyPath() + " " + vi.getMessage());
 		}
-		
+
 		// Validaciones especificas
 		switch (prospecto.getIdBanca()) {
 		case 1: // Particulares
