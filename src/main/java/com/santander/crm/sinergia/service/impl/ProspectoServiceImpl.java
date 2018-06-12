@@ -13,8 +13,6 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.codec.binary.Base64;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
