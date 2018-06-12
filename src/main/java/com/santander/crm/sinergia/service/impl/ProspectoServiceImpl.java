@@ -35,7 +35,7 @@ import com.santander.crm.sinergia.response.GenericProspectoRes;
 import com.santander.crm.sinergia.service.ProspectoService;
 import com.santander.crm.sinergia.service.TokenService;
 
-@Service("prospectoServiceImpl")
+@Service("prospectoServiceImpl") 
 public class ProspectoServiceImpl implements ProspectoService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProspectoServiceImpl.class);
