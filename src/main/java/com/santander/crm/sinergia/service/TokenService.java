@@ -5,5 +5,7 @@ import com.santander.crm.sinergia.entity.Ejecutivo;
 public interface TokenService {
 	
 	Ejecutivo desencriptarToken(String token);
+	
+	Ejecutivo decodeToken(String token);
 
 }

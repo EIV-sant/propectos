@@ -110,7 +110,7 @@ public class ProspectoController {
 	public ResponseEntity<Prospecto> actualizarProspecto(@RequestBody Prospecto prospecto,
 			@RequestHeader(value = "token", required = true) String token) {
 
-		GenericProspectoRes res = prospectoService.updateProspecto(prospecto);
+		GenericProspectoRes res = prospectoService.updateProspecto(prospecto, token);
 
 		HttpStatus hs = res.getHttpStatus();
 		HttpHeaders header = new HttpHeaders();

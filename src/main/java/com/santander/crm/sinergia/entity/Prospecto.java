@@ -189,6 +189,9 @@ public class Prospecto {
 	@Transient
 	private String nombreOfiAsignado;
 	
+	@Transient
+	private Integer autoAsignado;
+	
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
@@ -509,6 +512,14 @@ public class Prospecto {
 
 	public void setNombreOfiAsignado(String nombreOfiAsignado) {
 		this.nombreOfiAsignado = nombreOfiAsignado;
+	}
+
+	public Integer getAutoAsignado() {
+		return autoAsignado;
+	}
+
+	public void setAutoAsignado(Integer autoAsignado) {
+		this.autoAsignado = autoAsignado;
 	}
 
 }

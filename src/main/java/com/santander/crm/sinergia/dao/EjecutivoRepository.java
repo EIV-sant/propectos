@@ -21,6 +21,7 @@ public interface EjecutivoRepository extends CrudRepository<Ejecutivo, String> {
 			@Param(value = "idBanca") Integer idBanca,
 			@Param(value = "idSucursal") Integer idSucursal);
 	
-	Ejecutivo findByOfiAct(String ofiAct);
+	@Query("SELECT e FROM Ejecutivo e WHERE e.ofiAct = :ofiAct AND e.numAcceso = 1 ")
+	Ejecutivo findByOfiAct(@Param(value = "ofiAct") String ofiAct);
 
 }

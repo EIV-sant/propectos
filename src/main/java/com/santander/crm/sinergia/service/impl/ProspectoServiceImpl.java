@@ -13,6 +13,8 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 			// Ejecutivo ejecutivo =
 			// tokenService.desencriptarToken("af9AuquMutWZbRASD6N5mf3C8ZkKXC1kal5PrNAub6TtWt4uZJA97bNnYd39jf7wOkYLlx65qW2aEeNTrhKxPFriZSD%2BV9AXirewm8kE5rADxZbbhyRsAA%3D%3D");
-			Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			// Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			Ejecutivo ejecutivo = tokenService.decodeToken(token);
 
 			if (filter.getOfiAct() == null) {
 				filter.setOfiAct(ejecutivo.getOfiAct());
@@ -118,7 +121,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 		GenericProspectoRes response = new GenericProspectoRes();
 		try {
 
-			Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			// Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
+			Ejecutivo ejecutivo = tokenService.decodeToken(token);
 
 			prospecto.setExpReferente(ejecutivo.getExpediente());
 			prospecto.setOfiReferente(ejecutivo.getOfiAct());
@@ -134,11 +138,13 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// Setteos
 			prospecto = setDefaultValues(prospecto);
 
-			// Asignacion}switch(prospecto.getIdBanca()) {
-			Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
-			prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
-
-			prospecto.setFechaActualizacion();
+			// Asignación
+			if (prospecto.getAutoAsignado() == 0) {
+				Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
+				prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
+			} else if (prospecto.getAutoAsignado() == 1) {
+				prospecto.setOfiAsignado(prospecto.getOfiReferente());
+			}
 
 			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
@@ -148,7 +154,6 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ve.getMessage());
 		} catch (ParseException pe) {
-			System.out.println("pe-->" + pe.getMessage());
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(pe.getMessage());
 		} catch (Exception e) {
@@ -189,9 +194,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 	}
 
 	@Override
-	public GenericProspectoRes updateProspecto(Prospecto prospecto) {
+	public GenericProspectoRes updateProspecto(Prospecto prospecto, String token) {
 		GenericProspectoRes response = new GenericProspectoRes();
 		try {
+			Ejecutivo ejecutivo = tokenService.decodeToken(token);
 			validaProspectoBean(prospecto);
 			Prospecto prospectoAnt = prospectoRepository.getProspectoById(prospecto.getId());
 			if (prospectoAnt != null) {
@@ -285,6 +291,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 	private Prospecto setDefaultValues(Prospecto prospecto) {
 		// Estatus
 		prospecto.setIdEstatus(ESTATUS_NUEVO);
+		prospecto.setFechaActualizacion();
 
 		// Sets específicos
 		switch (prospecto.getIdBanca()) {

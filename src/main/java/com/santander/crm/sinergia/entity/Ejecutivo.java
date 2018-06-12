@@ -26,6 +26,9 @@ public class Ejecutivo {
 	@Column(name = "NUM_CC")
 	private Integer idSucursal;
 	
+	@Column(name = "NUM_ACCESO")
+	private Integer numAcceso;
+	
 	@JsonIgnore
 	@ManyToOne(optional=true)
 	@JoinColumn(name = "ID_TPO_EJV")
@@ -82,6 +85,14 @@ public class Ejecutivo {
 
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+
+	public Integer getNumAcceso() {
+		return numAcceso;
+	}
+
+	public void setNumAcceso(Integer numAcceso) {
+		this.numAcceso = numAcceso;
 	}
 
 }

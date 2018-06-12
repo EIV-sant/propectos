@@ -33,8 +33,9 @@ public interface ProspectoService {
 	/**
 	 * Metodo para actualizar un prospecto
 	 * @param prospecto a actualizar
+	 * @param token token enviado por NEO
 	 * @return prospecto actualizado
 	 */
-	GenericProspectoRes updateProspecto(Prospecto prospecto);
+	GenericProspectoRes updateProspecto(Prospecto prospecto, String token);
 
 }
