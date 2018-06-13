@@ -108,10 +108,10 @@ public class TokenServiceImpl implements TokenService {
 			}
 		} catch (JsonParseException e) {
 			LOGGER.info("Error al desencriptar el token1 " + e.getMessage());
-			throw new AccessException("Error al desencriptar el token: " + e.getMessage());
+			throw new AccessException("Error al desencriptar el token ");
 		} catch (JsonMappingException e) {
 			LOGGER.info("Error al desencriptar el token2 " + e.getMessage());
-			throw new AccessException("Error al desencriptar el token: " + e.getMessage());
+			throw new AccessException("Error al desencriptar el token ");
 		} catch (IOException e) {
 			LOGGER.info("Error al desencriptar el token3 " + e.getMessage());
 			throw new AccessException("Error al desencriptar el token: " + e.getMessage());
