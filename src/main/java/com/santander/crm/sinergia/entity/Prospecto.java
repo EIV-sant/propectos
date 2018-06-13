@@ -166,6 +166,9 @@ public class Prospecto {
 	@Column(name = "TXT_NOM_EJV_REF_POR")
 	private String nombreEjecRef;
 	
+	@Column(name = "TXT_EXP_CMP_REF_POR")
+	private String expEjecRef;
+	
 	@Column(name = "ID_EDO")
 	private Integer idEstado;
 
@@ -496,6 +499,14 @@ public class Prospecto {
 
 	public void setNombreEjecRef(String nombreEjecRef) {
 		this.nombreEjecRef = nombreEjecRef;
+	}
+
+	public String getExpEjecRef() {
+		return expEjecRef;
+	}
+
+	public void setExpEjecRef(String expEjecRef) {
+		this.expEjecRef = expEjecRef;
 	}
 
 	public Integer getIdEstado() {
