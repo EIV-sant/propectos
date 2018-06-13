@@ -101,7 +101,7 @@ public class TokenServiceImpl implements TokenService {
 					LOGGER.info("El token caduco");
 					throw new AccessException("El token caduco");
 				} else {
-					ejecutivo = ejecutivoRepository.findByOfiAct(tr.getOfiAct());
+					ejecutivo = ejecutivoRepository.findByOfiAct(tr.getOfiAct().trim());
 					if (ejecutivo == null) {
 						LOGGER.info("Ejecutivo sin acceso");
 						throw new AccessException("Ejecutivo sin acceso");
