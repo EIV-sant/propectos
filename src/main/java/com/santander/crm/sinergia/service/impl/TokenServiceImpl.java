@@ -91,21 +91,16 @@ public class TokenServiceImpl implements TokenService {
 		try {
 			byte[] message = Base64.decodeBase64(sToken);
 			desencriptado = new String(message);
-			System.out.println("TOKEN -->"+desencriptado);
+			System.out.println("TOKEN -->" + desencriptado);
 			ObjectMapper om = new ObjectMapper();
 			TokenRes tr = null;
 			tr = om.readValue(desencriptado, TokenRes.class);
 			token = tokenRepository.getBySToken(tr.getToken());
 			if (token != null) {
-				if(hoy.after(token.getFechaVigencia())) {
-					LOGGER.info("El token caduco");
-					throw new AccessException("El token caduco");
-				} else {
-					ejecutivo = ejecutivoRepository.findByOfiAct(tr.getOfiAct().trim());
-					if (ejecutivo == null) {
-						LOGGER.info("Ejecutivo sin acceso");
-						throw new AccessException("Ejecutivo sin acceso");
-					}
+				ejecutivo = ejecutivoRepository.findByOfiAct(tr.getOfiAct().trim());
+				if (ejecutivo == null) {
+					LOGGER.info("Ejecutivo sin acceso");
+					throw new AccessException("Ejecutivo sin acceso");
 				}
 			} else {
 				LOGGER.info("Token inválido");
