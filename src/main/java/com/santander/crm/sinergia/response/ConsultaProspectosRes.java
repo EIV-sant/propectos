@@ -14,6 +14,8 @@ public class ConsultaProspectosRes {
 	private Long total;
 
 	private Long convertidos;
+	
+	private Integer tpoBcaEjec;
 
 	@JsonIgnore
 	private HttpStatus httpStatus;
@@ -59,6 +61,14 @@ public class ConsultaProspectosRes {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Integer getTpoBcaEjec() {
+		return tpoBcaEjec;
+	}
+
+	public void setTpoBcaEjec(Integer tpoBcaEjec) {
+		this.tpoBcaEjec = tpoBcaEjec;
 	}
 
 }

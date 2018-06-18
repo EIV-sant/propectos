@@ -86,6 +86,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// tokenService.desencriptarToken("af9AuquMutWZbRASD6N5mf3C8ZkKXC1kal5PrNAub6TtWt4uZJA97bNnYd39jf7wOkYLlx65qW2aEeNTrhKxPFriZSD%2BV9AXirewm8kE5rADxZbbhyRsAA%3D%3D");
 			// Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
 			Ejecutivo ejecutivo = tokenService.decodeToken(token);
+			
 
 			if (filter.getOfiAct() == null) {
 				filter.setOfiAct(ejecutivo.getOfiAct());
@@ -97,7 +98,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				pr.setContactos(null);
 			}
 			response.setProspectos(prospectos);
-
+			response.setTpoBcaEjec(ejecutivo.getBanca().getId());
 			response.setTotal(prospectoRepository.countProspectosFiltered(filter));
 			response.setConvertidos(prospectoRepository.countProspectosConvertidosFiltered(filter));
 			response.setHttpStatus(HttpStatus.OK);
