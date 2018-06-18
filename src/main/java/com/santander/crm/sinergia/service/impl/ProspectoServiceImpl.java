@@ -249,7 +249,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo paterno no puede ser nulo");
 				throw new ValidationException("Error: El campo paterno no puede ser nulo");
 			}
-			if (prospecto.getNumCC() == null) {
+			if (prospecto.getNumCC() == null && prospecto.getAutoAsignado() == 0) {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
@@ -263,7 +263,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo idActividad no puede ser nulo");
 				throw new ValidationException("Error: El campo idActividad no puede ser nulo");
 			}
-			if (prospecto.getNumCC() == null) {
+			if (prospecto.getNumCC() == null && prospecto.getAutoAsignado() == 0) {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
@@ -277,7 +277,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo idActividad no puede ser nulo");
 				throw new ValidationException("Error: El campo idActividad no puede ser nulo");
 			}
-			if (prospecto.getOfiAsignado() == null) {
+			if (prospecto.getOfiAsignado() == null && prospecto.getAutoAsignado() == 0) {
 				LOGGER.error("Error: El campo ofiAsignado no puede ser nulo");
 				throw new ValidationException("Error: El campo ofiAsignado no puede ser nulo");
 			}
