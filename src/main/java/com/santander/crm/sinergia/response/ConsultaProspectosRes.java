@@ -31,7 +31,7 @@ public class ConsultaProspectosRes {
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = ImmutableList.copyOf(prospectos);;
+		this.prospectos = ImmutableList.copyOf(prospectos);
 	}
 
 	public Long getTotal() {
