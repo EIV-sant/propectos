@@ -32,13 +32,13 @@ public class TokenServiceImpl implements TokenService {
 	private static final String DELIMITER = "\\|";
 
 	@Autowired
-	ParametroRepository parametroRepository;
+	protected ParametroRepository parametroRepository;
 
 	@Autowired
-	EjecutivoRepository ejecutivoRepository;
+	protected EjecutivoRepository ejecutivoRepository;
 
 	@Autowired
-	TokenRepository tokenRepository;
+	protected TokenRepository tokenRepository;
 
 	@Override
 	public Ejecutivo desencriptarToken(String token) {
