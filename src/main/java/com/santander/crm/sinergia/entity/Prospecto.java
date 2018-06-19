@@ -206,7 +206,8 @@ public class Prospecto {
 	}
 
 	public Date getFechaActualizacion() {
-		return fechaActualizacion;
+		Date fecha = fechaActualizacion;
+		return fecha;
 	}
 
 	@PreUpdate
@@ -351,11 +352,13 @@ public class Prospecto {
 	}
 
 	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+		Date fecha = fechaNacimiento;
+		return fecha;
 	}
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+		Date fecha = fechaNacimiento;
+		this.fechaNacimiento = fecha;
 	}
 
 	public String getEstadoCivil() {
@@ -423,11 +426,13 @@ public class Prospecto {
 	}
 
 	public List<Contacto> getContactos() {
-		return contactos;
+		List<Contacto> cList = contactos;
+		return cList;
 	}
 
 	public void setContactos(List<Contacto> contactos) {
-		this.contactos = contactos;
+		List<Contacto> cList = contactos;
+		this.contactos = cList;
 	}
 
 	public Integer getNumEmpleados() {

@@ -41,22 +41,22 @@ public class ProspectoServiceImpl implements ProspectoService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProspectoServiceImpl.class);
 
 	@Autowired
-	ProspectoRepository prospectoRepository;
+	protected ProspectoRepository prospectoRepository;
 
 	@Autowired
-	EjecutivoRepository ejecutivoRepository;
+	protected EjecutivoRepository ejecutivoRepository;
 
 	@Autowired
-	EjecutivoSrRepository ejecutivoSrRepository;
+	protected EjecutivoSrRepository ejecutivoSrRepository;
 
 	@Autowired
-	TokenService tokenService;
+	protected TokenService tokenService;
 
 	@Autowired
-	SucursalRepository sucursalRepository;
+	protected SucursalRepository sucursalRepository;
 
-	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-	Validator validator = factory.getValidator();
+	protected static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	protected static Validator validator = factory.getValidator();
 
 	// ESTATUS
 	private static final Integer ESTATUS_NUEVO = 1;
