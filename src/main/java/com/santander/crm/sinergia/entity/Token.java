@@ -54,19 +54,21 @@ public class Token {
 	}
 
 	public Date getFechaVigencia() {
-		return fechaVigencia;
+		Date fecha = fechaVigencia;
+		return fecha;
 	}
 
 	public void setFechaVigencia(Date fechaVigencia) {
-		this.fechaVigencia = fechaVigencia;
+		this.fechaVigencia = (Date)fechaVigencia.clone();
 	}
 
 	public Date getFechaAlta() {
-		return fechaAlta;
+		Date fecha = fechaAlta;
+		return fecha;
 	}
 
 	public void setFechaAlta(Date fechaAlta) {
-		this.fechaAlta = fechaAlta;
+		this.fechaAlta = (Date)fechaAlta.clone();;
 	}
 
 }

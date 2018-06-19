@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.ImmutableList;
+import com.santander.crm.sinergia.entity.Contacto;
 import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 public class ConsultaProspectosRes {
@@ -24,11 +26,12 @@ public class ConsultaProspectosRes {
 	private String message;
 
 	public List<ProspectoSeguimiento> getProspectos() {
-		return prospectos;
+		List<ProspectoSeguimiento> listAux = prospectos;
+		return listAux;
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = prospectos;
+		this.prospectos = ImmutableList.copyOf(prospectos);;
 	}
 
 	public Long getTotal() {
