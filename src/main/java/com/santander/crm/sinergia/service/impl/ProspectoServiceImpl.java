@@ -106,7 +106,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ae.getMessage());
 		} catch (Exception e) {
-			LOGGER.error(e.toString());
+			LOGGER.error(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			response.setMessage(e.getMessage());
 		}
@@ -160,7 +160,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(pe.getMessage());
 		} catch (Exception e) {
-			LOGGER.error(e.toString());
+			LOGGER.error(e.getMessage());
 			response.setMessage(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -393,26 +393,20 @@ public class ProspectoServiceImpl implements ProspectoService {
 		} else { // selecciona el ejecutivo con menos prospectos asignados
 			for (Ejecutivo e : ejecutivoList) {
 				if (band) {// si es el primer registro
-					System.out.println("primer registro-->");
 					count = prospectoRepository.countProspectosByEjecutivo(e.getOfiAct());
-					System.out.println("primer registro count -->" + count);
 					ejec = e;
 					if (count == null) { // si no tiene se asigna este ejec por default
-						System.out.println("primer registro count null-->");
 						break;
 					}
 					band = false;
 				} else {
-					System.out.println("registro-->");
 					Long countAux = prospectoRepository.countProspectosByEjecutivo(e.getOfiAct());
 					if (countAux != null) {
 						if (countAux < count) { // si es menor se reasigna el ejec
-							System.out.println("registro menor-->");
 							ejec = e;
 							count = countAux;
 						}
 					} else { // si no tiene se asigna este ejec por default
-						System.out.println("registro sin asignados-->");
 						ejec = e;
 						break;
 					}
