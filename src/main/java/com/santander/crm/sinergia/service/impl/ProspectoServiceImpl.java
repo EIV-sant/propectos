@@ -35,7 +35,7 @@ import com.santander.crm.sinergia.response.GenericProspectoRes;
 import com.santander.crm.sinergia.service.ProspectoService;
 import com.santander.crm.sinergia.service.TokenService;
 
-@Service("prospectoServiceImpl") 
+@Service("prospectoServiceImpl")
 public class ProspectoServiceImpl implements ProspectoService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProspectoServiceImpl.class);
@@ -86,7 +86,6 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// tokenService.desencriptarToken("af9AuquMutWZbRASD6N5mf3C8ZkKXC1kal5PrNAub6TtWt4uZJA97bNnYd39jf7wOkYLlx65qW2aEeNTrhKxPFriZSD%2BV9AXirewm8kE5rADxZbbhyRsAA%3D%3D");
 			// Ejecutivo ejecutivo = tokenService.desencriptarToken(token);
 			Ejecutivo ejecutivo = tokenService.decodeToken(token);
-			
 
 			if (filter.getOfiAct() == null) {
 				filter.setOfiAct(ejecutivo.getOfiAct());
@@ -140,7 +139,12 @@ public class ProspectoServiceImpl implements ProspectoService {
 			// Asignación
 			if (prospecto.getAutoAsignado() == 0) {
 				Ejecutivo ejecAsignado = asignarEjecutivo(prospecto);
-				prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
+				if (ejecAsignado != null) {
+					prospecto.setOfiAsignado(ejecAsignado.getOfiAct());
+				} else {
+					LOGGER.info("No se asigno ejecutivo");
+					throw new ValidationException("No se asigno ejecutivo");
+				}
 			} else if (prospecto.getAutoAsignado() == 1) {
 				prospecto.setOfiAsignado(prospecto.getOfiReferente());
 			}
@@ -321,13 +325,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 			} else {
 				if (prospecto.getCapital() >= 75000) { // monto mayor o igual a 75,000
 					// Ej. Gerente de negocio select --> 62, sino al Ej. premier --> 2
-					ejecutivoList = ejecutivoRepository
-							.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_GERENTENEGOCIOSELECT, 1, prospecto.getNumCC());
-					System.out.println("gerente select lista-->" + ejecutivoList);
+					ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_GERENTENEGOCIOSELECT, 1, prospecto.getNumCC());
 					if (!ejecutivoList.isEmpty()) { // Ej. Gerente de negocio select --> 62
-						System.out.println("gerente select-->");
 						ejec = this.obtieneEjecutivoMenorProspectos(ejecutivoList);
-						System.out.println("gerente select seleccionado-->" + ejec.getOfiAct());
 					} else { // Ej. premier --> 2
 						ejecutivoList = ejecutivoRepository.getEjecutivosByIdTipoIdBancaIdSucursal(TIPO_PREMIER, 1,
 								prospecto.getNumCC());
