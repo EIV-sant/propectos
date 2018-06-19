@@ -28,6 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.common.collect.ImmutableList;
 
 @Entity
 @Table(name = "SIN_MX_MAE_NC")
@@ -430,8 +431,7 @@ public class Prospecto {
 	}
 
 	public void setContactos(List<Contacto> contactos) {
-		List<Contacto> cList = contactos;
-		this.contactos = cList;
+		this.contactos = ImmutableList.copyOf(contactos);
 	}
 
 	public Integer getNumEmpleados() {
