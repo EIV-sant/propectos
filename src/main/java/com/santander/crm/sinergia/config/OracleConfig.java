@@ -17,13 +17,16 @@ import oracle.jdbc.pool.OracleDataSource;
 public class OracleConfig {
 	
 	@Value("${url.oracle}")
-	private String urlOracle = "jdbc:oracle:thin:@180.181.159.40:1521:sinbande";     
+	private String urlOracle = "jdbc:oracle:thin:@localhost:1521:xe";
+//	private String urlOracle = "jdbc:oracle:thin:@180.181.159.40:1521:sinbande";
 
 	@Value("${user.oracle}")
-	private String userOracle = "sin";
+	private String userOracle = "system";
+//	private String userOracle = "deifsine";
 
 	@Value("${pass.oracle}")
-	private String passOracle = "sinergia";
+	private String passOracle = "oracle";
+//	private String passOracle = "sinergia";
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(OracleConfig.class);
 	
@@ -32,13 +35,13 @@ public class OracleConfig {
 		
 		LOGGER.info("Se conecta a BD en " + urlOracle);
 		
-		if(urlOracle.equals(null) || urlOracle.isEmpty() || urlOracle.equals("") || urlOracle.equals("${url.oracle}")) {
+		if(urlOracle == null || urlOracle.isEmpty() || urlOracle.equals("") || urlOracle.equals("${url.oracle}")) {
 			LOGGER.error("NO SE ENCUENTRA LA CONFIGURACIÓN DE ORACLE. REVISAR CONFIG-SERVICE - url.oracle. LA APLICACION SE TERMINARÁ");
 			System.exit(0);
-		} else if(userOracle.equals(null) || userOracle.isEmpty() || userOracle.equals("") || userOracle.equals("${user.oracle}")) {
+		} else if(userOracle == null || userOracle.isEmpty() || userOracle.equals("") || userOracle.equals("${user.oracle}")) {
 			LOGGER.error("NO SE ENCUENTRA LA CONFIGURACIÓN DE ORACLE. REVISAR CONFIG-SERVICE - user.oracle");
 			System.exit(0);
-		} else if(passOracle.equals(null) || passOracle.isEmpty() || passOracle.equals("") || passOracle.equals("${pass.oracle}")) {
+		} else if(passOracle == null || passOracle.isEmpty() || passOracle.equals("") || passOracle.equals("${pass.oracle}")) {
 			LOGGER.error("NO SE ENCUENTRA LA CONFIGURACIÓN DE ORACLE. REVISAR CONFIG-SERVICE - pass.oracle");
 			System.exit(0);
 		}
