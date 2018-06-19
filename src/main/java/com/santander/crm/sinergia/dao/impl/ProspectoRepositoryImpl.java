@@ -20,7 +20,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 	private final static Integer iEstatusConvertido = 4;
 
 	@PersistenceContext
-	protected EntityManager entityManager;
+	private EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -357,8 +357,7 @@ public class Prospecto {
 	}
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
-		Date fecha = fechaNacimiento;
-		this.fechaNacimiento = fecha;
+		this.fechaNacimiento = (Date)fechaNacimiento.clone();
 	}
 
 	public String getEstadoCivil() {
