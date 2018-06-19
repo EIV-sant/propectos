@@ -196,7 +196,8 @@ public class Prospecto {
 	private Integer autoAsignado;
 	
 	public Date getFechaAlta() {
-		return fechaAlta;
+		Date fecha = fechaAlta;
+		return fecha;
 	}
 
 	@PrePersist

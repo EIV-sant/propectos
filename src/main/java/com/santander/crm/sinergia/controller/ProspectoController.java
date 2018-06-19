@@ -32,7 +32,7 @@ public class ProspectoController {
 
 	@Autowired
 	@Qualifier("prospectoServiceImpl")
-	ProspectoService prospectoService;
+	protected ProspectoService prospectoService;
 
 	/**
 	 * Endpoint GET para consultar los prospectos
