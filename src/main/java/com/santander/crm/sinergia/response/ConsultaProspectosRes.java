@@ -1,6 +1,5 @@
 package com.santander.crm.sinergia.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class ConsultaProspectosRes {
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = new ArrayList<ProspectoSeguimiento>(prospectos);
+		this.prospectos = prospectos;
 	}
 
 	public Long getTotal() {

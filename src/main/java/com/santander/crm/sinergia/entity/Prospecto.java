@@ -1,6 +1,5 @@
 package com.santander.crm.sinergia.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -431,7 +430,7 @@ public class Prospecto {
 	}
 
 	public void setContactos(List<Contacto> contactos) {
-		this.contactos = new ArrayList<Contacto>(contactos);
+		this.contactos = contactos;
 	}
 
 	public Integer getNumEmpleados() {
