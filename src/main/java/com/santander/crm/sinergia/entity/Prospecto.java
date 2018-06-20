@@ -431,7 +431,7 @@ public class Prospecto {
 	}
 
 	public void setContactos(List<Contacto> contactos) {
-		this.contactos = ImmutableList.copyOf(contactos);
+		this.contactos = contactos;
 	}
 
 	public Integer getNumEmpleados() {

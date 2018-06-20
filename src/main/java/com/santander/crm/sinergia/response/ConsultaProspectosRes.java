@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableList;
-import com.santander.crm.sinergia.entity.Contacto;
 import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 public class ConsultaProspectosRes {
@@ -31,7 +30,7 @@ public class ConsultaProspectosRes {
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = ImmutableList.copyOf(prospectos);
+		this.prospectos = prospectos;
 	}
 
 	public Long getTotal() {
