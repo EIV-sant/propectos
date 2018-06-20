@@ -1,5 +1,6 @@
 package com.santander.crm.sinergia.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 @Entity
 @Table(name = "SIN_MX_MAE_NC")
@@ -74,13 +76,13 @@ public class Prospecto {
 	// FIN INSERTADOS EN NEGOCIO
 
 	// OPCIONALES
-	
+
 	@Column(name = "SIN_MX_CAT_TPO_TEL_ID_TPO_TEL")
 	private Integer idTipoTelefono;
 
 	@Column(name = "SIN_MX_CAT_LOC_ID_LOC")
 	private Integer idLocalidad;
-	
+
 	/**
 	 * Posibles valores: 1. PERSONA FISICA ACTIVIDAD EMPRESARIAL 2. PERSONA FISICA
 	 */
@@ -103,7 +105,7 @@ public class Prospecto {
 
 	@Column(name = "TXT_TEL")
 	private String telefono;
-	
+
 	@Column(name = "TXT_EXT")
 	private String ext;
 
@@ -162,39 +164,39 @@ public class Prospecto {
 	@Min(value = 0)
 	@Column(name = "NUM_EMPLEADOS")
 	private Integer numEmpleados;
-	
+
 	@Column(name = "TXT_NOM_EJV_REF_POR")
 	private String nombreEjecRef;
-	
+
 	@Column(name = "TXT_EXP_CMP_REF_POR")
 	private String expEjecRef;
-	
+
 	@Column(name = "ID_EDO")
 	private Integer idEstado;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "prospecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Contacto> contactos;
-	
-	//NO PERSISTEN
+
+	// NO PERSISTEN
 	@Transient
 	private Integer numCC;
-	
+
 	@Transient
 	private Integer idZon;
-	
+
 	@Transient
 	private Integer idReg;
-	
+
 	@Transient
 	private String fecNac;
-	
+
 	@Transient
 	private String nombreOfiAsignado;
-	
+
 	@Transient
 	private Integer autoAsignado;
-	
+
 	public Date getFechaAlta() {
 		Date fecha = fechaAlta;
 		return fecha;
@@ -357,7 +359,7 @@ public class Prospecto {
 	}
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = (Date)fechaNacimiento.clone();
+		this.fechaNacimiento = (Date) fechaNacimiento.clone();
 	}
 
 	public String getEstadoCivil() {
@@ -430,7 +432,11 @@ public class Prospecto {
 	}
 
 	public void setContactos(List<Contacto> contactos) {
-		this.contactos = contactos;
+		if (contactos != null) {
+			this.contactos = new ArrayList<Contacto>(contactos);
+		} else {
+			this.contactos = null;
+		}
 	}
 
 	public Integer getNumEmpleados() {
