@@ -1,11 +1,11 @@
 package com.santander.crm.sinergia.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.ImmutableList;
 import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 public class ConsultaProspectosRes {
@@ -30,7 +30,7 @@ public class ConsultaProspectosRes {
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = prospectos;
+		this.prospectos = new ArrayList<ProspectoSeguimiento>(prospectos);
 	}
 
 	public Long getTotal() {
