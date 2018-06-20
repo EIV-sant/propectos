@@ -30,7 +30,11 @@ public class ConsultaProspectosRes {
 	}
 
 	public void setProspectos(List<ProspectoSeguimiento> prospectos) {
-		this.prospectos = new ArrayList<ProspectoSeguimiento>(prospectos);
+		if (prospectos != null) {
+			this.prospectos = new ArrayList<ProspectoSeguimiento>(prospectos);
+		} else {
+			this.prospectos = null;
+		}
 	}
 
 	public Long getTotal() {

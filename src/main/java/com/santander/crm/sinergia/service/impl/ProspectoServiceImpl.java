@@ -106,7 +106,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ae.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			response.setMessage(e.getMessage());
