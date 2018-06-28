@@ -28,7 +28,7 @@ public interface ProspectoService {
 	 * @param idProspecto el identificador 
 	 * @return prospecto
 	 */
-	GenericProspectoRes getProspecto(Integer idProspecto);
+	GenericProspectoRes getProspecto(String idProspecto);
 	
 	/**
 	 * Metodo para actualizar un prospecto

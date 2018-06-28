@@ -92,7 +92,7 @@ public class ProspectoController {
 	 */
 	@RequestMapping(value = "/prospectos/{idProspecto}", method = { RequestMethod.GET })
 	@CrossOrigin(origins = "*")
-	public ResponseEntity<Prospecto> consultarProspecto(@PathVariable Integer idProspecto,
+	public ResponseEntity<Prospecto> consultarProspecto(@PathVariable String idProspecto,
 			@RequestHeader(value = "token", required = true) String token) {
 		GenericProspectoRes res = prospectoService.getProspecto(idProspecto);
 		

@@ -37,9 +37,9 @@ public class Prospecto {
 
 	@Id
 	@Column(name = "ID_NC")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ_PROSP")
-	@SequenceGenerator(sequenceName = "SIN_MX_MAE_NC_SEQ", allocationSize = 1, name = "CUST_SEQ_PROSP")
-	private Integer id;
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUST_SEQ_PROSP")
+//	@SequenceGenerator(sequenceName = "SIN_MX_MAE_NC_SEQ", allocationSize = 1, name = "CUST_SEQ_PROSP")
+	private String id;
 
 	// OBLIGATORIOS
 	@NotEmpty
@@ -217,11 +217,11 @@ public class Prospecto {
 		this.fechaActualizacion = new Date();
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

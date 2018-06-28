@@ -60,7 +60,10 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 	// ESTATUS
 	private static final Integer ESTATUS_NUEVO = 1;
-
+	
+	//TOTAL DIGITOS ID PROSPECTO
+	private static final Integer DIGITOS_ID = 7;
+	
 	// TIPO TELÉFONO
 	// private static final Integer TELEFONO_OFICINA = 3;
 
@@ -149,7 +152,8 @@ public class ProspectoServiceImpl implements ProspectoService {
 			} else if (prospecto.getAutoAsignado() == 1) {
 				prospecto.setOfiAsignado(prospecto.getOfiReferente());
 			}
-
+			
+			prospecto.setId(this.generaIdProspecto());
 			Prospecto prospectoSaved = prospectoRepository.save(prospecto);
 			response.setProspecto(prospectoSaved);
 			response.setHttpStatus(HttpStatus.OK);
@@ -161,6 +165,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(pe.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 			response.setMessage(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -171,7 +176,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 	}
 
 	@Override
-	public GenericProspectoRes getProspecto(Integer idProspecto) {
+	public GenericProspectoRes getProspecto(String idProspecto) {
 		GenericProspectoRes response = new GenericProspectoRes();
 		try {
 			Prospecto prospecto = prospectoRepository.getProspectoById(idProspecto);
@@ -416,6 +421,17 @@ public class ProspectoServiceImpl implements ProspectoService {
 			System.out.println("ejec seleccionado-->" + ejec);
 		}
 		return ejec;
+	}
+	
+	public String generaIdProspecto() {
+		Long nextVal = prospectoRepository.generateSecuenceProspecto();
+		String formatString = String.format("S%%0%dd", DIGITOS_ID);
+		String formattedString = String.format(formatString, nextVal);
+//		StringBuffer sIdProspecto = new StringBuffer();
+//		sIdProspecto.append(PREFIJO_ID);
+//		sIdProspecto.append(formattedString);
+//		System.out.println("sIdProspecto----->"+sIdProspecto);
+		return formattedString;
 	}
 
 }

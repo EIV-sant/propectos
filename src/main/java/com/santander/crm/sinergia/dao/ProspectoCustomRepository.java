@@ -14,5 +14,7 @@ public interface ProspectoCustomRepository {
 	Long countProspectosConvertidosFiltered(ProspectoFilter filter);
 	
 	Long countProspectosByEjecutivo(String ofiAsignado);
+	
+	Long generateSecuenceProspecto();
 
 }

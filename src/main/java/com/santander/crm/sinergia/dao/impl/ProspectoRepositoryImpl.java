@@ -1,5 +1,6 @@
 package com.santander.crm.sinergia.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import com.santander.crm.sinergia.filter.ProspectoSeguimiento;
 
 @Repository
 public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
-	
+
 	private final static Integer iEstatusConvertido = 4;
 
 	@PersistenceContext
@@ -40,10 +41,11 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 
 		StringBuffer sbQuery = new StringBuffer();
 
-		sbQuery.append("SELECT p, to_date(sysdate, 'dd/mm/yyyy') - to_date(p.fechaAlta, 'dd/mm/yyyy') as dias FROM Prospecto p ");
+		sbQuery.append(
+				"SELECT p, to_date(sysdate, 'dd/mm/yyyy') - to_date(p.fechaAlta, 'dd/mm/yyyy') as dias FROM Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
 		sbQuery.append("order by p.idEstatus asc, p.fechaAlta asc, p.id asc ");
-		System.out.println("query-->"+sbQuery);
+		System.out.println("query-->" + sbQuery);
 		Query query = entityManager.createQuery(sbQuery.toString());
 		query.setFirstResult(pageNum);
 		query.setMaxResults(pageSize);
@@ -54,7 +56,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 			ps = new ProspectoSeguimiento();
 			Prospecto pr = (Prospecto) o[0];
 			ps.setP(pr);
-			Integer i = ((Double)o[1]).intValue();
+			Integer i = ((Double) o[1]).intValue();
 			ps.setDias(i);
 			psList.add(ps);
 		}
@@ -64,10 +66,10 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 	@Override
 	public Long countProspectosFiltered(ProspectoFilter filter) {
 		StringBuffer sbQuery = new StringBuffer();
-		
+
 		sbQuery.append("SELECT count(p.id) from Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
-		
+
 		Query query = entityManager.createQuery(sbQuery.toString(), Long.class);
 		Long total = (Long) query.getSingleResult();
 		return total;
@@ -76,22 +78,30 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 	@Override
 	public Long countProspectosConvertidosFiltered(ProspectoFilter filter) {
 		StringBuffer sbQuery = new StringBuffer();
-		
+
 		sbQuery.append("SELECT count(p.id) from Prospecto p ");
 		sbQuery.append(filterToWhereClause(filter));
 		sbQuery.append("and p.idEstatus = " + iEstatusConvertido);
-		
+
 		Query query = entityManager.createQuery(sbQuery.toString(), Long.class);
+		Long total = (Long) query.getSingleResult();
+		return total;
+	}
+
+	@Override
+	public Long countProspectosByEjecutivo(String ofiAsignado) {
+		Query query = entityManager
+				.createQuery("SELECT count(p.id) FROM Prospecto p WHERE p.ofiAsignado = :ofiAsignado ", Long.class);
+		query.setParameter("ofiAsignado", ofiAsignado);
 		Long total = (Long) query.getSingleResult();
 		return total;
 	}
 	
 	@Override
-	public Long countProspectosByEjecutivo(String ofiAsignado) {
-		Query query = entityManager.createQuery("SELECT count(p.id) FROM Prospecto p WHERE p.ofiAsignado = :ofiAsignado ", Long.class);
-		query.setParameter("ofiAsignado", ofiAsignado);
-		Long total = (Long) query.getSingleResult();
-		return total;
+	public Long generateSecuenceProspecto() {
+		Query query = entityManager.createNativeQuery("SELECT SIN_MX_MAE_NC_SEQ.NEXTVAL FROM DUAL ");
+		BigDecimal nextVal = (BigDecimal) query.getSingleResult();
+		return nextVal.longValue();
 	}
 
 	private String filterToWhereClause(ProspectoFilter filter) {
@@ -114,5 +124,7 @@ public class ProspectoRepositoryImpl implements ProspectoCustomRepository {
 		sbWhere.append(" ");
 		return sbWhere.toString();
 	}
+
+	
 
 }
