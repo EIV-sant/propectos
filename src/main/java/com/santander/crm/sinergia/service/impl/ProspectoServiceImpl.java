@@ -264,6 +264,9 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
 			}
+			if(prospecto.getEstadoCivil() != null && prospecto.getEstadoCivil().equals("-1")) {
+				prospecto.setEstadoCivil(null);
+			}
 			break;
 		case 2: // Pyme
 			if (prospecto.getRfc() == null) {
@@ -293,6 +296,13 @@ public class ProspectoServiceImpl implements ProspectoService {
 				throw new ValidationException("Error: El campo ofiAsignado no puede ser nulo");
 			}
 			break;
+		}
+		
+		if(prospecto.getIdEstado() != null && prospecto.getIdEstado() == -1) {
+			prospecto.setIdEstado(null);
+		}
+		if(prospecto.getIdLocalidad() != null && prospecto.getIdLocalidad() == -1) {
+			prospecto.setIdLocalidad(null);
 		}
 
 	}

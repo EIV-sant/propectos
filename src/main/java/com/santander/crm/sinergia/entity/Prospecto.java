@@ -150,7 +150,7 @@ public class Prospecto {
 	@Column(name = "TXT_COLONIA")
 	private String colonia;
 
-	@Size(min = 5, max = 5, message = "debe ser de 5 digitos")
+	//@Size(min = 5, max = 5, message = "debe ser de 5 digitos")
 	@Column(name = "TXT_COD_POST")
 	private String codPostal;
 
