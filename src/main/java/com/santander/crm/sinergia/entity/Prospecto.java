@@ -119,7 +119,7 @@ public class Prospecto {
 	@Column(name = "SIN_MX_CAT_EJEC_TXT_EXP_CMP")
 	private String expReferente;
 
-	@Size(min = 10, max = 13, message = "debe contener entre 10 y 13 digitos")
+	//@Size(min = 10, max = 13, message = "debe contener entre 10 y 13 digitos")
 	@Column(name = "TXT_RFC")
 	private String rfc;
 

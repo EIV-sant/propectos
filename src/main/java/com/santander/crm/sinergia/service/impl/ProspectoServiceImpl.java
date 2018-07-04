@@ -254,7 +254,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 				LOGGER.error("Error: El campo genero no puede ser nulo");
 				throw new ValidationException("Error: El campo genero no puede ser nulo");
 			}
-			if (prospecto.getEstadoCivil() == null) {
+			if (prospecto.getEstadoCivil() == null || prospecto.getEstadoCivil().equals("") || prospecto.getEstadoCivil().equals("-1")) {
 				prospecto.setEstadoCivil(NO_APLICA);
 			}
 			if (prospecto.getPaterno() == null) {
@@ -264,9 +264,6 @@ public class ProspectoServiceImpl implements ProspectoService {
 			if (prospecto.getNumCC() == null && prospecto.getAutoAsignado() == 0) {
 				LOGGER.error("Error: El campo sucursal no puede ser nulo");
 				throw new ValidationException("Error: El campo sucursal no puede ser nulo");
-			}
-			if(prospecto.getEstadoCivil() != null && prospecto.getEstadoCivil().equals("-1")) {
-				prospecto.setEstadoCivil(null);
 			}
 			break;
 		case 2: // Pyme
