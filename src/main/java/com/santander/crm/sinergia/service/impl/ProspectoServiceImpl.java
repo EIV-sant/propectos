@@ -128,8 +128,7 @@ public class ProspectoServiceImpl implements ProspectoService {
 
 			prospecto.setExpReferente(ejecutivo.getExpediente());
 			prospecto.setOfiReferente(ejecutivo.getOfiAct());
-
-			if (prospecto.getFecNac() != null) {
+			if (prospecto.getFecNac() != null && !prospecto.getFecNac().equals("")) {
 				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				prospecto.setFechaNacimiento(df.parse(prospecto.getFecNac()));
 			}
@@ -161,11 +160,13 @@ public class ProspectoServiceImpl implements ProspectoService {
 		} catch (ValidationException ve) {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(ve.getMessage());
+			LOGGER.error(ve.getMessage());
 		} catch (ParseException pe) {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST);
 			response.setMessage(pe.getMessage());
+			LOGGER.error(pe.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			LOGGER.error(e.getMessage());
 			response.setMessage(e.getMessage());
 			response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
