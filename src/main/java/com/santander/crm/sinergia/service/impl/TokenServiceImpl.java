@@ -25,7 +25,7 @@ import com.santander.crm.sinergia.utils.CipherSinergias;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-//pruebas
+//probando
 	private static final Logger LOGGER = LoggerFactory.getLogger(TokenServiceImpl.class);
 
 	private static final String ID_LLAVE = "decipher_key";
